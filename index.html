@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Lucky</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    <!-- Google Fonts: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f4f9f9;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --primary-color: #81cbea;
+            --primary-hover: #6ab7d9;
+            --display-bg: #f8fbfb;
+            --shadow: 0 10px 30px rgba(129, 203, 234, 0.15);
+            --transition: all 0.3s ease;
+            --nav-bg: #ffffff;
+            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Dark Mode Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #12181b;
+            --card-bg: #1e2528;
+            --text-main: #eef3f5;
+            --text-secondary: #a0aab2;
+            --primary-color: #81cbea;
+            --primary-hover: #96d4ef;
+            --display-bg: #161c1f;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --border-color: rgba(129, 203, 234, 0.1);
+            --nav-bg: #1e2528;
+            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Center horizontally and vertically */
+            padding: 20px;
+            padding-bottom: 90px;
+            /* Space for bottom nav */
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--nav-bg);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding: 10px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        [data-theme="dark"] .bottom-nav {
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            transition: var(--transition);
+            width: 50%;
+            padding: 5px 0;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-item:hover i {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: 400;
+        }
+
+        .nav-item.active i {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 8px rgba(129, 203, 234, 0.5);
+        }
+
+        .app-container {
+            background-color: var(--card-bg);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .theme-toggle,
+        .reset-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--display-bg);
+            transition: var(--transition);
+            position: absolute;
+        }
+
+        .theme-toggle {
+            color: var(--text-main);
+            left: 0;
+        }
+
+        .reset-btn {
+            color: var(--text-secondary);
+            right: 0;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .reset-btn:hover {
+            color: #ff6b6b;
+            transform: rotate(-45deg) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-display {
+            background-color: var(--display-bg);
+            border-radius: 20px;
+            padding: 50px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid var(--border-color, rgba(129, 203, 234, 0.2));
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+
+        .number {
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            letter-spacing: 0.3rem;
+            line-height: 1;
+            text-shadow: 0 4px 15px rgba(129, 203, 234, 0.2);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+
+        [data-theme="dark"] .btn {
+            color: #12181b;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(129, 203, 234, 0.35);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(129, 203, 234, 0.2);
+        }
+
+        .btn i {
+            font-size: 1.3rem;
+        }
+
+        /* Initial Placeholder Style */
+        .placeholder {
+            color: #ccc;
+            letter-spacing: normal;
+        }
+
+        [data-theme="dark"] .placeholder {
+            color: #444;
+        }
+
+        /* Animations */
+        @keyframes pop {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-number {
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .footer {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            font-size: 0.8.5rem;
+            color: var(--text-secondary);
+            /* Use white text if the black box is intended, or adjust as needed */
+            /*background-color: #000000;*/
+            /* Black box per the user's apparent literal request */
+            user-select: none;
+            margin-top: 15px;
+            /* Spacing from the white frame */
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .dropdown-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .app-container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .number {
+                font-size: 3.5rem;
+                letter-spacing: 0.2rem;
+            }
+
+            .title {
+                font-size: 1.3rem;
+            }
+
+            .btn {
+                padding: 14px 16px;
+                font-size: 1.05rem;
+            }
+
+            .result-display {
+                min-height: 150px;
+                padding: 40px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="reset-btn" id="resetBtn" aria-label="Reset Number" onclick="resetNumber()" title="รีเซ็ต">
+                <i class="fas fa-undo-alt"></i>
+            </button>
+            <h1 class="title">สุ่มตัวเลข<span style="color: var(--primary-color)">นำโชค</span></h1>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+
+        <!-- Result Display -->
+        <div class="result-display">
+            <div class="number placeholder" id="resultDisplay">- - -</div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn" onclick="generateNumber(6)">
+                <i class="fas fa-dice"></i> สุ่มเลข 6 หลัก
+            </button>
+            <button class="btn" onclick="generateNumber(3)">
+                <i class="fas fa-dice-d20"></i> สุ่มเลข 3 หลัก
+            </button>
+            <button class="btn" onclick="generateNumber(2)">
+                <i class="fas fa-dice-six"></i> สุ่มเลข 2 หลัก
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        Copyright &copy; 2026 NumberList V 1.0 All rights reserved.
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-dice"></i>
+            <span>สุ่มตัวเลข</span>
+        </a>
+        <a href="lottery.html" class="nav-item">
+            <i class="fas fa-ticket-alt"></i>
+            <span>ตรวจหวย</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        const body = document.body;
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.hasAttribute('data-theme')) {
+                // Switch to Light Mode
+                body.removeAttribute('data-theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switch to Dark Mode
+                body.setAttribute('data-theme', 'dark');
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Random Number Generator Logic
+        const resultDisplay = document.getElementById('resultDisplay');
+        let isAnimating = false;
+
+        function resetNumber() {
+            if (isAnimating) return;
+            resultDisplay.textContent = '- - -';
+            resultDisplay.classList.add('placeholder');
+            resultDisplay.classList.remove('animate-number');
+        }
+
+        function generateNumber(digits) {
+            if (isAnimating) return; // Prevent multiple clicks while animating
+            isAnimating = true;
+
+            // Prepare display for animation
+            resultDisplay.classList.remove('animate-number', 'placeholder');
+
+            // Trigger reflow to restart animation later
+            void resultDisplay.offsetWidth;
+
+            let counter = 0;
+            const maxTicks = 15; // Number of rolling ticks
+            const intervalTime = 40; // Ms between ticks
+
+            // Rolling effect
+            const interval = setInterval(() => {
+                let randomTemp = '';
+                for (let i = 0; i < digits; i++) {
+                    randomTemp += Math.floor(Math.random() * 10);
+                }
+                resultDisplay.textContent = randomTemp;
+                counter++;
+
+                if (counter >= maxTicks) {
+                    clearInterval(interval);
+
+                    // Generate final number
+                    let finalNumber = '';
+                    for (let i = 0; i < digits; i++) {
+                        finalNumber += Math.floor(Math.random() * 10);
+                    }
+
+                    // Display final number and add pop animation
+                    resultDisplay.textContent = finalNumber;
+                    resultDisplay.classList.add('animate-number');
+                    isAnimating = false;
+                }
+            }, intervalTime);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจสลากกินแบ่งรัฐบาล</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    <!-- Google Fonts: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f4f9f9;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --primary-color: #81cbea;
+            --primary-hover: #6ab7d9;
+            --display-bg: #f8fbfb;
+            --shadow: 0 10px 30px rgba(129, 203, 234, 0.15);
+            --transition: all 0.3s ease;
+            --nav-bg: #ffffff;
+            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border-color: rgba(129, 203, 234, 0.2);
+            --success-color: #28a745;
+        }
+
+        /* Dark Mode Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #12181b;
+            --card-bg: #1e2528;
+            --text-main: #eef3f5;
+            --text-secondary: #a0aab2;
+            --primary-color: #81cbea;
+            --primary-hover: #96d4ef;
+            --display-bg: #161c1f;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --border-color: rgba(129, 203, 234, 0.1);
+            --nav-bg: #1e2528;
+            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            padding-bottom: 90px;
+            /* Space for bottom nav */
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--nav-bg);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding: 10px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        [data-theme="dark"] .bottom-nav {
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            transition: var(--transition);
+            width: 50%;
+            padding: 5px 0;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-item:hover i {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item.active i {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 8px rgba(129, 203, 234, 0.5);
+        }
+
+        /* App Container */
+        .app-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--display-bg);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Lottery Results Container */
+        .lottery-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lottery-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            border: 1px solid var(--border-color);
+        }
+
+        .lottery-date-box {
+            background-color: var(--display-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-width: 120px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .lottery-date-box .day {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .lottery-date-box .month-year {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .lottery-content {
+            flex-grow: 1;
+            padding: 20px 30px;
+        }
+
+        .lottery-title {
+            color: #ff6b6b;
+            /* Always reddish for title like the example */
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .result-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-number {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            letter-spacing: 0.1rem;
+        }
+
+        .result-number.multi {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 30px;
+            color: #ff6b6b;
+            background-color: rgba(255, 107, 107, 0.1);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            user-select: none;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .result-item {
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 15px;
+            }
+
+            .result-item:nth-last-child(-n+2) {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .dropdown-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .lottery-card {
+                flex-direction: column;
+            }
+
+            .lottery-date-box {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                flex-direction: row;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .lottery-date-box .month-year {
+                margin-top: 0;
+                text-align: left;
+            }
+
+            .lottery-content {
+                padding: 20px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-item {
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 15px;
+            }
+
+            .result-item:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">ตรวจสลากกินแบ่งรัฐบาล </h1>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Lottery Results List -->
+        <div class="lottery-list" id="lotteryContainer">
+            <div class="loading">
+                <i class="fas fa-circle-notch fa-spin"></i> กำลังโหลดข้อมูลสลากกินแบ่งรัฐบาล...
+            </div>
+            <!-- Data will be injected here by JS -->
+        </div>
+    </div>
+
+    <div class="footer">
+        Copyright &copy; 2026 NumberList V 1.0 All rights reserved.
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-dice"></i>
+            <span>สุ่มตัวเลข</span>
+        </a>
+        <a href="lottery.html" class="nav-item active">
+            <i class="fas fa-ticket-alt"></i>
+            <span>ตรวจหวย</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        const body = document.body;
+
+        // Check for saved theme in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.hasAttribute('data-theme')) {
+                // Switch to Light Mode
+                body.removeAttribute('data-theme');
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switch to Dark Mode
+                body.setAttribute('data-theme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // --- Lottery Data Fetching Logic ---
+        const lotteryContainer = document.getElementById('lotteryContainer');
+
+        // Helper to map Thai month numbers to names
+        const thaiMonths = [
+            "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+            "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+        ];
+
+        const thaiMonthsFull = [
+            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+            "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+        ];
+
+        // Fetch Data from Rayriffy API
+        async function fetchLotteryData() {
+            try {
+                // Fetch the index which contains the dates of all available lotteries (Page 1)
+                const listRes = await fetch('https://lotto.api.rayriffy.com/list/1');
+                if (!listRes.ok) throw new Error('Network response list was not ok');
+
+                const listData = await listRes.json();
+
+                // Get the top 5 most recent dates
+                const recentDates = listData.response.slice(0, 5);
+
+                lotteryContainer.innerHTML = ''; // Clear loading
+
+                // Fetch data for each date
+                for (let i = 0; i < recentDates.length; i++) {
+                    const dateId = recentDates[i].id;
+                    const res = await fetch(`https://lotto.api.rayriffy.com/lotto/${dateId}`);
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        renderLotteryCard(data.response, i === 0);
+                    } else {
+                        console.error(`Failed to fetch data for ${dateId}`);
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error fetching lottery data:", error);
+                lotteryContainer.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i> ขออภัย ไม่สามารถดึงข้อมูลสลากกินแบ่งได้ในขณะนี้ กรุณาลองใหม่ภายหลัง
+                    </div>
+                `;
+            }
+        }
+
+        function formatThaiDate(dateString) {
+            // dateString format from API usually: "1 ตุลาคม 2565" or similar
+            // We need to parse this for the side box.
+            const parts = dateString.split(' ');
+            if (parts.length >= 3) {
+                const day = parts[0];
+                const monthFull = parts[1];
+                let monthShort = monthFull; // Fallback
+
+                // Find index to get short month
+                const monthIndex = thaiMonthsFull.findIndex(m => m === monthFull);
+                if (monthIndex !== -1) {
+                    monthShort = thaiMonths[monthIndex];
+                }
+
+                const year = parts[2];
+                return { day, monthShort, year, fullString: dateString };
+            }
+            return { day: "-", monthShort: "-", year: "-", fullString: dateString };
+        }
+
+        function renderLotteryCard(data, isLatest = false) {
+            const dateInfo = formatThaiDate(data.date);
+
+            // Extract numbers safely from Rayriffy response structure
+            // prize 1 is in data.prizes[0]
+            const prize1 = data.prizes[0] ? data.prizes[0].number[0] : "------";
+
+            let numFront3 = ["---", "---"];
+            let numBack3 = ["---", "---"];
+            let numBack2 = "---";
+
+            if (data.runningNumbers) {
+                // Front 3 is usually index 0
+                if (data.runningNumbers[0] && data.runningNumbers[0].number.length > 0) {
+                    numFront3 = data.runningNumbers[0].number;
+                }
+                // Back 3 is usually index 1
+                if (data.runningNumbers[1] && data.runningNumbers[1].number.length > 0) {
+                    numBack3 = data.runningNumbers[1].number;
+                }
+                // Back 2 is usually index 2
+                if (data.runningNumbers[2] && data.runningNumbers[2].number.length > 0) {
+                    numBack2 = data.runningNumbers[2].number[0];
+                }
+            }
+
+            const isLatestStyle = isLatest ? 'style="border-color: var(--primary-color); box-shadow: 0 4px 15px rgba(129, 203, 234, 0.4);"' : '';
+            const latestBadgeHtml = isLatest ? `<span style="background-color: var(--primary-color); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-left: 10px; vertical-align: middle;">งวดล่าสุด</span>` : '';
+
+            const html = `
+                <div class="lottery-card" ${isLatestStyle}>
+                    <div class="lottery-date-box">
+                        <div class="day">${dateInfo.day}</div>
+                        <div class="month-year">${dateInfo.monthShort}<br>${dateInfo.year}</div>
+                    </div>
+                    <div class="lottery-content">
+                        <div class="lottery-title">ตรวจสลากกินแบ่งรัฐบาล ${dateInfo.fullString} ${latestBadgeHtml}</div>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <div class="result-label">รางวัลที่ 1</div>
+                                <div class="result-number">${prize1}</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">เลขหน้า 3 ตัว</div>
+                                <div class="result-number multi">
+                                    <span>${numFront3[0] || "---"}</span>
+                                    <span>${numFront3[1] || "---"}</span>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">เลขท้าย 3 ตัว</div>
+                                <div class="result-number multi">
+                                    <span>${numBack3[0] || "---"}</span>
+                                    <span>${numBack3[1] || "---"}</span>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">เลขท้าย 2 ตัว</div>
+                                <div class="result-number">${numBack2}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Append each card to the container
+            lotteryContainer.innerHTML += html;
+        }
+
+        // Initialize fetching
+        fetchLotteryData();
+
+    </script>
+</body>
+
+</html>
