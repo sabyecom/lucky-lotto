@@ -124,8 +124,11 @@
         /* App Container */
         .app-container {
             width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 480px;
+            /* Matched with index.html */
+            margin: 0;
+            padding: 10px;
+            /* Give some breathing room to the edges */
         }
 
         .header {
@@ -178,32 +181,33 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             border: 1px solid var(--border-color);
         }
 
         .lottery-date-box {
             background-color: var(--display-bg);
-            padding: 20px;
+            padding: 15px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
-            min-width: 120px;
-            border-right: 1px solid var(--border-color);
+            gap: 15px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .lottery-date-box .day {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 600;
             color: var(--text-main);
             line-height: 1;
         }
 
         .lottery-date-box .month-year {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
-            margin-top: 5px;
-            text-align: center;
+            margin-top: 0;
+            text-align: left;
         }
 
         .lottery-content {
@@ -221,14 +225,21 @@
 
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 15px;
             text-align: center;
         }
 
         .result-item {
             display: flex;
             flex-direction: column;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .result-item:nth-last-child(-n+2) {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .result-label {
@@ -240,16 +251,16 @@
         }
 
         .result-number {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 500;
             color: var(--text-main);
-            letter-spacing: 0.1rem;
+            letter-spacing: 0.05rem;
         }
 
         .result-number.multi {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .loading {
@@ -277,55 +288,8 @@
             margin-bottom: 20px;
         }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .results-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
-
-            .result-item {
-                border-bottom: 1px solid var(--border-color);
-                padding-bottom: 15px;
-            }
-
-            .result-item:nth-last-child(-n+2) {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-
-            .dropdown-btn {
-                padding: 8px 15px;
-                font-size: 0.9rem;
-            }
-
-            .lottery-card {
-                flex-direction: column;
-            }
-
-            .lottery-date-box {
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                flex-direction: row;
-                gap: 15px;
-                padding: 15px;
-            }
-
-            .lottery-date-box .month-year {
-                margin-top: 0;
-                text-align: left;
-            }
-
-            .lottery-content {
-                padding: 20px;
-            }
-
+        /* Mobile Responsiveness for very small screens */
+        @media (max-width: 400px) {
             .results-grid {
                 grid-template-columns: 1fr;
             }
@@ -341,11 +305,15 @@
             }
 
             .header {
-                padding: 15px 20px;
+                padding: 15px 15px;
             }
 
             .title {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+            }
+
+            .lottery-date-box .day {
+                font-size: 1.8rem;
             }
         }
     </style>
