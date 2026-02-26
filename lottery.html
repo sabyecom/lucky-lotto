@@ -198,7 +198,7 @@
 
         .lottery-date-box .day {
             font-size: 2.2rem;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-main);
             line-height: 1;
         }
@@ -221,6 +221,7 @@
             font-size: 1.1rem;
             font-weight: 500;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .results-grid {
@@ -482,16 +483,16 @@
             }
 
             const isLatestStyle = isLatest ? 'style="border-color: var(--primary-color); box-shadow: 0 4px 15px rgba(129, 203, 234, 0.4);"' : '';
-            const latestBadgeHtml = isLatest ? `<span style="background-color: var(--primary-color); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-left: 10px; vertical-align: middle;">งวดล่าสุด</span>` : '';
+            const latestBadgeHtml = isLatest ? `<span style="background-color: var(--primary-color); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-left: 10px; vertical-align: middle;">ล่าสุด</span>` : '';
 
             const html = `
                 <div class="lottery-card" ${isLatestStyle}>
                     <div class="lottery-date-box">
                         <div class="day">${dateInfo.day}</div>
-                        <div class="month-year">${dateInfo.monthShort}<br>${dateInfo.year}</div>
+                        <div class="month-year">${dateInfo.monthShort}${dateInfo.year}</div>
                     </div>
                     <div class="lottery-content">
-                        <div class="lottery-title">ตรวจสลากกินแบ่งรัฐบาล ${dateInfo.fullString} ${latestBadgeHtml}</div>
+                        <div class="lottery-title">งวดวันที่ ${dateInfo.fullString} ${latestBadgeHtml}</div>
                         <div class="results-grid">
                             <div class="result-item">
                                 <div class="result-label">รางวัลที่ 1</div>
