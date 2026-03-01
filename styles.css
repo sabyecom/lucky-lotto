@@ -62,7 +62,7 @@ body {
     box-shadow: none;
     width: 100%;
     max-width: 480px;
-    padding: 20px 15px;
+    padding: 80px 20px;
     /* Reduced padding since there's no visible box */
     position: relative;
     margin: 0 auto;
@@ -77,7 +77,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     position: relative;
 }
 
