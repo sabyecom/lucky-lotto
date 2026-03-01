@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- iOS Web App Metadata -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lottery Lucky">
@@ -11,468 +10,133 @@
     <meta name="theme-color" id="themeColorMeta" content="#f4f9f9">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lottery Lucky</title>
 
-    <!-- Google Fonts: Kanit -->
+    <!-- App Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon.png">
+
+    <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #f4f9f9;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-secondary: #666666;
-            --primary-color: #81cbea;
-            --primary-hover: #6ab7d9;
-            --display-bg: #f8fbfb;
-            --shadow: 0 10px 30px rgba(129, 203, 234, 0.15);
-            --transition: all 0.3s ease;
-            --nav-bg: #ffffff;
-            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
 
-        /* Dark Mode Theme Variables */
-        [data-theme="dark"] {
-            --bg-color: #12181b;
-            --card-bg: #1e2528;
-            --text-main: #eef3f5;
-            --text-secondary: #a0aab2;
-            --primary-color: #81cbea;
-            --primary-hover: #96d4ef;
-            --display-bg: #161c1f;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            --border-color: rgba(129, 203, 234, 0.1);
-            --nav-bg: #1e2528;
-            --nav-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Kanit', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /* Center horizontally and vertically */
-            padding: 20px;
-            padding-bottom: 90px;
-            /* Space for bottom nav */
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--nav-bg);
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            padding: 10px 0;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
-        [data-theme="dark"] .bottom-nav {
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            transition: var(--transition);
-            width: 33.33%;
-            padding: 5px 0;
-        }
-
-        .nav-item i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            transition: transform 0.2s ease;
-        }
-
-        .nav-item:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-item:hover i {
-            transform: translateY(-2px);
-        }
-
-        .nav-item.active {
-            color: var(--primary-color);
-            font-weight: 400;
-        }
-
-        .nav-item.active i {
-            transform: translateY(-2px);
-            text-shadow: 0 4px 8px rgba(129, 203, 234, 0.5);
-        }
-
-        .app-container {
-            background-color: var(--card-bg);
-            border-radius: 40px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 480px;
-            padding: 40px 30px;
-            position: relative;
-            overflow: hidden;
-            margin: 0;
-        }
-
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .title {
-            font-size: 1.5rem;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .theme-toggle,
-        .reset-btn {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--display-bg);
-            transition: var(--transition);
-            position: absolute;
-        }
-
-        .theme-toggle {
-            color: var(--text-main);
-            left: 0;
-        }
-
-        .reset-btn {
-            color: var(--text-secondary);
-            right: 0;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .reset-btn:hover {
-            color: #ff6b6b;
-            transform: rotate(-45deg) scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .result-display {
-            background-color: var(--display-bg);
-            border-radius: 20px;
-            padding: 50px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            border: 2px solid var(--border-color, rgba(129, 203, 234, 0.2));
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 180px;
-        }
-
-        .number {
-            font-size: 4.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            letter-spacing: 0.3rem;
-            line-height: 1;
-            text-shadow: 0 4px 15px rgba(129, 203, 234, 0.2);
-        }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 30px;
-            padding: 16px 20px;
-            font-size: 1.1rem;
-            font-weight: 300;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            user-select: none;
-        }
-
-        [data-theme="dark"] .btn {
-            color: #12181b;
-            font-weight: 600;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(129, 203, 234, 0.35);
-        }
-
-        .btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 10px rgba(129, 203, 234, 0.2);
-        }
-
-        .btn i {
-            font-size: 1.3rem;
-        }
-
-        /* Initial Placeholder Style */
-        .placeholder {
-            color: #ccc;
-            letter-spacing: normal;
-        }
-
-        [data-theme="dark"] .placeholder {
-            color: #444;
-        }
-
-        /* Animations */
-        @keyframes pop {
-            0% {
-                transform: scale(0.85);
-                opacity: 0.5;
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .animate-number {
-            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .footer {
-            width: 100%;
-            max-width: 480px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            /* Use white text if the black box is intended, or adjust as needed */
-            /*background-color: #000000;*/
-            /* Black box per the user's apparent literal request */
-            user-select: none;
-            margin-top: 15px;
-            /* Spacing from the white frame */
-            padding: 10px 15px;
-            border-radius: 10px;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-
-            .dropdown-btn {
-                padding: 8px 15px;
-                font-size: 0.9rem;
-            }
-
-            .app-container {
-                padding: 30px 20px;
-                border-radius: 20px;
-            }
-
-            .number {
-                font-size: 3.5rem;
-                letter-spacing: 0.2rem;
-            }
-
-            .title {
-                font-size: 1.3rem;
-            }
-
-            .btn {
-                padding: 14px 16px;
-                font-size: 1.05rem;
-            }
-
-            .result-display {
-                min-height: 150px;
-                padding: 40px 10px;
-            }
-        }
-
-        /* iOS Install Prompt */
-        .ios-prompt-overlay {
-            position: fixed;
-            bottom: -150%;
-            /* Hide initially */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-            padding: 20px;
-            z-index: 2000;
-            transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-
-        .ios-prompt-overlay.show {
-            bottom: 20px;
-            /* Above the bottom nav (if hidden in browser) or screen edge */
-        }
-
-        [data-theme="dark"] .ios-prompt-overlay {
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-color);
-        }
-
-        .ios-prompt-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .ios-prompt-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .ios-prompt-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .ios-prompt-body {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 5px;
-        }
-
-        .ios-prompt-icon {
-            display: inline-block;
-            background-color: var(--bg-color);
-            padding: 3px 6px;
-            border-radius: 6px;
-            margin: 0 4px;
-            font-size: 1rem;
-            color: #007aff;
-            /* iOS Blue */
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .ios-arrow-down {
-            margin-top: 10px;
-            font-size: 1.5rem;
-            color: #007aff;
-            animation: bounce 1.5s infinite;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(10px);
-            }
-
-            60% {
-                transform: translateY(5px);
-            }
-        }
-    </style>
+    <!-- Unified CSS -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <div class="app-container">
-        <!-- Header -->
-        <div class="header">
-            <button class="reset-btn" id="resetBtn" aria-label="Reset Number" onclick="resetNumber()" title="รีเซ็ต">
-                <i class="fas fa-undo-alt"></i>
-            </button>
-            <h1 class="title">สุ่มตัวเลข<span style="color: var(--primary-color)">นำโชค</span></h1>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-                <i class="fas fa-sun"></i>
-            </button>
-        </div>
+    <!-- 1. RANDOM NUMBER VIEW -->
+    <div id="view-random" class="view active">
+        <div class="app-container">
+            <div class="header">
+                <button class="reset-btn" id="resetBtn" aria-label="Reset Number" onclick="resetNumber()"
+                    title="รีเซ็ต">
+                    <i class="fas fa-undo-alt"></i>
+                </button>
+                <h1 class="title">สุ่มตัวเลข<span style="color: var(--primary-color)">นำโชค</span></h1>
+                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
 
-        <!-- Result Display -->
-        <div class="result-display">
-            <div class="number placeholder" id="resultDisplay">- - -</div>
-        </div>
+            <div class="result-display">
+                <div class="number placeholder" id="resultDisplay">- - -</div>
+            </div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <button class="btn" onclick="generateNumber(6)">
-                <i class="fas fa-dice"></i> สุ่มเลข 6 หลัก
-            </button>
-            <button class="btn" onclick="generateNumber(3)">
-                <i class="fas fa-dice-d20"></i> สุ่มเลข 3 หลัก
-            </button>
-            <button class="btn" onclick="generateNumber(2)">
-                <i class="fas fa-dice-six"></i> สุ่มเลข 2 หลัก
-            </button>
+            <div class="controls">
+                <button class="btn" onclick="generateNumber(6)">
+                    <i class="fas fa-dice"></i> สุ่มเลข 6 หลัก
+                </button>
+                <button class="btn" onclick="generateNumber(3)">
+                    <i class="fas fa-dice-d20"></i> สุ่มเลข 3 หลัก
+                </button>
+                <button class="btn" onclick="generateNumber(2)">
+                    <i class="fas fa-dice-six"></i> สุ่มเลข 2 หลัก
+                </button>
+            </div>
+        </div>
+        <div class="footer">
+            Copyright &copy; 2026 Lottery Lucky V 1.0 All rights reserved.
         </div>
     </div>
 
-    <div class="footer">
-        Copyright &copy; 2026 NumberList V 1.0 All rights reserved.
+    <!-- 2. LOTTERY LIST VIEW -->
+    <div id="view-lottery" class="view">
+        <div class="app-container">
+            <div class="header">
+                <h1 class="title">ตรวจสลากกินแบ่งรัฐบาล</h1>
+                <!-- <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-sun"></i>
+                </button> -->
+            </div>
+
+            <div class="lottery-list" id="lotteryContainer">
+                <div class="loading">
+                    <i class="fas fa-circle-notch fa-spin"></i> กำลังโหลดข้อมูลสลากกินแบ่งรัฐบาล...
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            Copyright &copy; 2026 Lottery Lucky V 1.0 All rights reserved.
+        </div>
     </div>
 
-    <!-- iOS Add to Home Screen Prompt -->
+    <!-- 3. CHECK LOTTERY VIEW -->
+    <div id="view-check" class="view">
+        <div class="app-container">
+            <div class="header highlight-box">
+                <h1 class="title">ตรวจสลากผลรางวัล</h1>
+                <!-- <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                   <i class="fas fa-sun"></i> 
+                </button> -->
+            </div>
+
+            <div class="check-card">
+                <div class="form-group">
+                    <label for="dateSelect">เลือกงวดที่ต้องการตรวจ</label>
+                    <select id="dateSelect">
+                        <option value="">กำลังโหลดงวด...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numberInput">กรอกเลข 6 ตัว (รางวัลที่ 1, ใกล้เคียง)</label>
+                    <input type="number" id="numberInput" placeholder="กรอกเลข 6 หลัก" maxlength="6"
+                        oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6); this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
+
+                <div class="form-group">
+                    <label for="numberInput3">กรอกเลข 3 ตัว (หน้า, ท้าย)</label>
+                    <input type="number" id="numberInput3" placeholder="กรอกเลข 3 หลัก" maxlength="3"
+                        oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3); this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
+
+                <div class="form-group">
+                    <label for="numberInput2">กรอกเลข 2 ตัว (ท้าย 2 ตัว)</label>
+                    <input type="number" id="numberInput2" placeholder="กรอกเลข 2 หลัก" maxlength="2"
+                        oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2); this.value = this.value.replace(/[^0-9]/g, '');">
+                </div>
+
+                <button class="check-btn" id="checkBtn" onclick="checkLottery()">
+                    <i class="fas fa-search"></i> ตรวจรางวัล
+                </button>
+
+                <div class="result-box" id="resultBox">
+                    <!-- Results will be injected here -->
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            Copyright &copy; 2026 Lottery Lucky V 1.0 All rights reserved.
+        </div>
+    </div>
+
+    <!-- iOS Install Prompt -->
     <div class="ios-prompt-overlay" id="iosPrompt">
         <div class="ios-prompt-header">
             <div class="ios-prompt-title">ติดตั้งลงเครื่อง</div>
@@ -486,149 +150,24 @@
         <div class="ios-arrow-down"><i class="fas fa-hand-point-down"></i></div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- SPA Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active">
+        <button class="nav-item active" id="nav-random" data-view="random">
             <i class="fas fa-dice"></i>
             <span>สุ่มตัวเลข</span>
-        </a>
-        <a href="lottery.html" class="nav-item">
+        </button>
+        <button class="nav-item" id="nav-lottery" data-view="lottery">
             <i class="fas fa-ticket-alt"></i>
             <span>ตรวจหวย</span>
-        </a>
-        <a href="check_lottery.html" class="nav-item">
+        </button>
+        <button class="nav-item" id="nav-check" data-view="check">
             <i class="fas fa-search"></i>
             <span>ตรวจรางวัล</span>
-        </a>
+        </button>
     </nav>
 
-    <!-- JavaScript Logic -->
-    <script>
-        // Theme Toggle Logic
-        const themeToggle = document.getElementById('themeToggle');
-        const icon = themeToggle.querySelector('i');
-        const body = document.body;
-        const themeColorMeta = document.getElementById('themeColorMeta');
-
-        // Check for saved theme in localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            icon.classList.replace('fa-sun', 'fa-moon');
-            if (themeColorMeta) themeColorMeta.setAttribute('content', '#12181b');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            if (body.hasAttribute('data-theme')) {
-                // Switch to Light Mode
-                body.removeAttribute('data-theme');
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'light');
-                if (themeColorMeta) themeColorMeta.setAttribute('content', '#f4f9f9');
-            } else {
-                // Switch to Dark Mode
-                body.setAttribute('data-theme', 'dark');
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'dark');
-                if (themeColorMeta) themeColorMeta.setAttribute('content', '#12181b');
-            }
-        });
-
-        // Random Number Generator Logic
-        const resultDisplay = document.getElementById('resultDisplay');
-        let isAnimating = false;
-
-        // iOS Install Prompt Logic
-        const iosPrompt = document.getElementById('iosPrompt');
-        const closeIosPrompt = document.getElementById('closeIosPrompt');
-
-        const checkIosApp = () => {
-            const userAgent = window.navigator.userAgent.toLowerCase();
-            const isIos = /iphone|ipad|ipod/.test(userAgent);
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-            if (isIos && !isStandalone) {
-                // Show if user hasn't dismissed it
-                if (!localStorage.getItem('iosPromptDismissed')) {
-                    setTimeout(() => {
-                        iosPrompt.classList.add('show');
-                    }, 2000); // Wait 2s before showing to allow time to load and read main screen
-                }
-            }
-        };
-
-        closeIosPrompt.addEventListener('click', () => {
-            iosPrompt.classList.remove('show');
-            localStorage.setItem('iosPromptDismissed', 'true');
-        });
-
-        // Run the iOS check
-        checkIosApp();
-
-        function resetNumber() {
-            if (isAnimating) return;
-            resultDisplay.textContent = '- - -';
-            resultDisplay.classList.add('placeholder');
-            resultDisplay.classList.remove('animate-number');
-        }
-
-        function generateNumber(digits) {
-            if (isAnimating) return; // Prevent multiple clicks while animating
-            isAnimating = true;
-
-            // Prepare display for animation
-            resultDisplay.classList.remove('animate-number', 'placeholder');
-
-            // Trigger reflow to restart animation later
-            void resultDisplay.offsetWidth;
-
-            let counter = 0;
-            const maxTicks = 15; // Number of rolling ticks
-            const intervalTime = 40; // Ms between ticks
-
-            // Rolling effect
-            const interval = setInterval(() => {
-                let randomTemp = '';
-                for (let i = 0; i < digits; i++) {
-                    randomTemp += Math.floor(Math.random() * 10);
-                }
-                resultDisplay.textContent = randomTemp;
-                counter++;
-
-                if (counter >= maxTicks) {
-                    clearInterval(interval);
-
-                    // Generate final number
-                    let finalNumber = '';
-                    for (let i = 0; i < digits; i++) {
-                        finalNumber += Math.floor(Math.random() * 10);
-                    }
-
-                    // Display final number and add pop animation
-                    resultDisplay.textContent = finalNumber;
-                    resultDisplay.classList.add('animate-number');
-                    isAnimating = false;
-                }
-            }, intervalTime);
-        }
-
-        // WebApp Link Interception (Prevent opening in Safari/Browser when in standalone mode)
-        document.addEventListener('click', function (event) {
-            const link = event.target.closest('a');
-            if (!link || !link.href) return;
-
-            // Allow external links or links that explicitly want new tabs
-            if (link.host !== window.location.host || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) return;
-
-            // Only intercept if we are in standalone mode (installed WebApp)
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
-
-            if (isStandalone) {
-                event.preventDefault();
-                window.location.href = link.href;
-            }
-        });
-    </script>
+    <!-- Unified JavaScript -->
+    <script src="app.js"></script>
 </body>
 
 </html>
