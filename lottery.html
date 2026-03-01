@@ -93,7 +93,7 @@
             color: var(--text-secondary);
             font-size: 0.8rem;
             transition: var(--transition);
-            width: 50%;
+            width: 33.33%;
             padding: 5px 0;
         }
 
@@ -204,7 +204,7 @@
         }
 
         .lottery-date-box .month-year {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             margin-top: 0;
             text-align: left;
@@ -219,7 +219,7 @@
             color: #ff6b6b;
             /* Always reddish for title like the example */
             font-size: 1.1rem;
-            font-weight: 500;
+            font-weight: 420;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -354,6 +354,10 @@
             <i class="fas fa-ticket-alt"></i>
             <span>ตรวจหวย</span>
         </a>
+        <a href="check_lottery.html" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>ตรวจรางวัล</span>
+        </a>
     </nav>
 
     <!-- JavaScript Logic -->
@@ -462,23 +466,30 @@
             // Extract numbers safely from Rayriffy response structure
             // prize 1 is in data.prizes[0]
             const prize1 = data.prizes[0] ? data.prizes[0].number[0] : "------";
+            const prize1Reward = data.prizes[0] && data.prizes[0].reward ? `(${parseInt(data.prizes[0].reward).toLocaleString()} บ.)` : "(6,000,000 บ.)";
 
             let numFront3 = ["---", "---"];
             let numBack3 = ["---", "---"];
             let numBack2 = "---";
+            let front3Reward = "(4,000 บ.)";
+            let back3Reward = "(4,000 บ.)";
+            let back2Reward = "(2,000 บ.)";
 
             if (data.runningNumbers) {
                 // Front 3 is usually index 0
                 if (data.runningNumbers[0] && data.runningNumbers[0].number.length > 0) {
                     numFront3 = data.runningNumbers[0].number;
+                    if (data.runningNumbers[0].reward) front3Reward = `(${parseInt(data.runningNumbers[0].reward).toLocaleString()} บ.)`;
                 }
                 // Back 3 is usually index 1
                 if (data.runningNumbers[1] && data.runningNumbers[1].number.length > 0) {
                     numBack3 = data.runningNumbers[1].number;
+                    if (data.runningNumbers[1].reward) back3Reward = `(${parseInt(data.runningNumbers[1].reward).toLocaleString()} บ.)`;
                 }
                 // Back 2 is usually index 2
                 if (data.runningNumbers[2] && data.runningNumbers[2].number.length > 0) {
                     numBack2 = data.runningNumbers[2].number[0];
+                    if (data.runningNumbers[2].reward) back2Reward = `(${parseInt(data.runningNumbers[2].reward).toLocaleString()} บ.)`;
                 }
             }
 
@@ -495,25 +506,25 @@
                         <div class="lottery-title">งวดวันที่ ${dateInfo.fullString} ${latestBadgeHtml}</div>
                         <div class="results-grid">
                             <div class="result-item">
-                                <div class="result-label">รางวัลที่ 1</div>
+                                <div class="result-label">รางวัลที่ 1 <span style="font-size: 0.75rem; color: var(--success-color);">${prize1Reward}</span></div>
                                 <div class="result-number">${prize1}</div>
                             </div>
                             <div class="result-item">
-                                <div class="result-label">เลขหน้า 3 ตัว</div>
+                                <div class="result-label">เลขหน้า 3 ตัว <span style="font-size: 0.75rem; color: var(--success-color);">${front3Reward}</span></div>
                                 <div class="result-number multi">
                                     <span>${numFront3[0] || "---"}</span>
                                     <span>${numFront3[1] || "---"}</span>
                                 </div>
                             </div>
                             <div class="result-item">
-                                <div class="result-label">เลขท้าย 3 ตัว</div>
+                                <div class="result-label">เลขท้าย 3 ตัว <span style="font-size: 0.75rem; color: var(--success-color);">${back3Reward}</span></div>
                                 <div class="result-number multi">
                                     <span>${numBack3[0] || "---"}</span>
                                     <span>${numBack3[1] || "---"}</span>
                                 </div>
                             </div>
                             <div class="result-item">
-                                <div class="result-label">เลขท้าย 2 ตัว</div>
+                                <div class="result-label">เลขท้าย 2 ตัว <span style="font-size: 0.75rem; color: var(--success-color);">${back2Reward}</span></div>
                                 <div class="result-number">${numBack2}</div>
                             </div>
                         </div>
