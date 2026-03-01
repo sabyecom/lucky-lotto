@@ -3,11 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ตรวจสลากผลรางวัล</title>
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <!-- iOS Web App Metadata -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NumberList">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" id="themeColorMeta" content="#f4f9f9">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
     <!-- Google Fonts: Kanit -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Font Awesome icons -->
@@ -342,7 +346,7 @@
         <div class="header">
             <h1 class="title">ตรวจสลากผลรางวัล</h1>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
             </button>
         </div>
 
@@ -408,11 +412,13 @@
         const themeToggle = document.getElementById('themeToggle');
         const icon = themeToggle.querySelector('i');
         const body = document.body;
+        const themeColorMeta = document.getElementById('themeColorMeta');
 
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             body.setAttribute('data-theme', 'dark');
-            icon.classList.replace('fa-moon', 'fa-sun');
+            icon.classList.replace('fa-sun', 'fa-moon');
+            if (themeColorMeta) themeColorMeta.setAttribute('content', '#12181b');
         }
 
         themeToggle.addEventListener('click', () => {
@@ -420,10 +426,12 @@
                 body.removeAttribute('data-theme');
                 icon.classList.replace('fa-moon', 'fa-sun');
                 localStorage.setItem('theme', 'light');
+                if (themeColorMeta) themeColorMeta.setAttribute('content', '#f4f9f9');
             } else {
                 body.setAttribute('data-theme', 'dark');
                 icon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('theme', 'dark');
+                if (themeColorMeta) themeColorMeta.setAttribute('content', '#12181b');
             }
         });
 
@@ -542,7 +550,7 @@
 
                     if (data.runningNumbers) {
                         data.runningNumbers.forEach(runNum => {
-                            let rewardText = runNum.reward ? ` (${parseInt(runNum.reward).toLocaleString()} บาท)` : '';
+                            let rewardText = runNum.reward ? `` : '';
 
                             if (runNum.id === "runningNumberFrontThree" && runNum.number && runNum.number.includes(front3)) {
                                 if (!runNum.reward) { rewardText = " (4,000 บาท)"; totalReward += 4000; }
@@ -564,7 +572,7 @@
                 } else if (checkType === '3') {
                     if (data.runningNumbers) {
                         data.runningNumbers.forEach(runNum => {
-                            let rewardText = runNum.reward ? ` (${parseInt(runNum.reward).toLocaleString()} บาท)` : '';
+                            let rewardText = runNum.reward ? `` : '';
 
                             if (runNum.id === "runningNumberFrontThree" && runNum.number && runNum.number.includes(checkTarget)) {
                                 if (!runNum.reward) { rewardText = " (4,000 บาท)"; totalReward += 4000; }
@@ -581,7 +589,7 @@
                 } else if (checkType === '2') {
                     if (data.runningNumbers) {
                         data.runningNumbers.forEach(runNum => {
-                            let rewardText = runNum.reward ? ` (${parseInt(runNum.reward).toLocaleString()} บาท)` : '';
+                            let rewardText = runNum.reward ? `` : '';
 
                             if (runNum.id === "runningNumberBackTwo" && runNum.number && runNum.number.includes(checkTarget)) {
                                 if (!runNum.reward) { rewardText = " (2,000 บาท)"; totalReward += 2000; }
@@ -623,6 +631,23 @@
             checkBtn.innerHTML = '<i class="fas fa-search"></i> ตรวจรางวัล';
             resultBox.style.display = 'block';
         }
+
+        // WebApp Link Interception (Prevent opening in Safari/Browser when in standalone mode)
+        document.addEventListener('click', function (event) {
+            const link = event.target.closest('a');
+            if (!link || !link.href) return;
+
+            // Allow external links or links that explicitly want new tabs
+            if (link.host !== window.location.host || link.getAttribute('target') === '_blank' || link.hasAttribute('download')) return;
+
+            // Only intercept if we are in standalone mode (installed WebApp)
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
+
+            if (isStandalone) {
+                event.preventDefault();
+                window.location.href = link.href;
+            }
+        });
 
         // Initialize
         loadDates();
