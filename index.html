@@ -67,7 +67,7 @@
 
     <!-- 2. LOTTERY LIST VIEW -->
     <div id="view-lottery" class="view">
-        <div class="app-container"><br><br><br><br>
+        <div class="app-container"><br><br>
             <div class="header">
                 <h1 class="title">ตรวจสลากกินแบ่งรัฐบาล</h1>
                 <!-- <button class="theme-toggle" aria-label="Toggle Dark Mode">
@@ -107,19 +107,19 @@
                 <div class="form-group">
                     <label for="numberInput">กรอกเลข 6 ตัว (รางวัลที่ 1, ใกล้เคียง)</label>
                     <input type="number" id="numberInput" placeholder="กรอกเลข 6 หลัก" maxlength="6"
-                        oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6); this.value = this.value.replace(/[^0-9]/g, '');">
+                        oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6); this.value = this.value.replace(/[^0-9]/g, ''); document.getElementById('numberInput3').value = ''; document.getElementById('numberInput2').value = '';">
                 </div>
 
                 <div class="form-group">
                     <label for="numberInput3">กรอกเลข 3 ตัว (หน้า, ท้าย)</label>
                     <input type="number" id="numberInput3" placeholder="กรอกเลข 3 หลัก" maxlength="3"
-                        oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3); this.value = this.value.replace(/[^0-9]/g, '');">
+                        oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3); this.value = this.value.replace(/[^0-9]/g, ''); document.getElementById('numberInput').value = ''; document.getElementById('numberInput2').value = '';">
                 </div>
 
                 <div class="form-group">
                     <label for="numberInput2">กรอกเลข 2 ตัว (ท้าย 2 ตัว)</label>
                     <input type="number" id="numberInput2" placeholder="กรอกเลข 2 หลัก" maxlength="2"
-                        oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2); this.value = this.value.replace(/[^0-9]/g, '');">
+                        oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2); this.value = this.value.replace(/[^0-9]/g, ''); document.getElementById('numberInput').value = ''; document.getElementById('numberInput3').value = '';">
                 </div>
 
                 <button class="check-btn" id="checkBtn" onclick="checkLottery()">

@@ -111,9 +111,23 @@ function navigateTo(viewName) {
         fetchLotteryData();
         lotteryLoaded = true;
     }
-    if (viewName === 'check' && !checkLoaded) {
-        loadDates();
-        checkLoaded = true;
+    if (viewName === 'check') {
+        if (!checkLoaded) {
+            loadDates();
+            checkLoaded = true;
+        }
+
+        // Refresh check lottery form fields every time we enter this view
+        ['numberInput', 'numberInput3', 'numberInput2'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        const rBox = document.getElementById('resultBox');
+        if (rBox) {
+            rBox.style.display = 'none';
+            rBox.className = 'result-box';
+            rBox.innerHTML = '';
+        }
     }
 
     window.location.hash = viewName;

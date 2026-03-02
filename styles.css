@@ -62,7 +62,7 @@ body {
     box-shadow: none;
     width: 100%;
     max-width: 480px;
-    padding: 80px 20px;
+    padding: 40px 20px;
     /* Reduced padding since there's no visible box */
     position: relative;
     margin: 0 auto;
